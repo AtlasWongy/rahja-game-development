@@ -1,0 +1,102 @@
+[gd_scene load_steps=14 format=4 uid="uid://bkexd5gcr5i4m"]
+
+[ext_resource type="Texture2D" uid="uid://dwha0xbefcevh" path="res://Environment/Demo/Background/background_layer_1.png" id="1_p06pa"]
+[ext_resource type="Texture2D" uid="uid://unh0pqtpyrhk" path="res://Environment/Demo/Background/background_layer_2.png" id="2_n8qen"]
+[ext_resource type="Texture2D" uid="uid://py8kp1u5xhvc" path="res://Environment/Demo/Background/background_layer_3.png" id="3_1wvs2"]
+[ext_resource type="Texture2D" uid="uid://c6t7atbs23l6u" path="res://Environment/Demo/TileSet/oak_woods_tileset.png" id="4_t0nj4"]
+[ext_resource type="Texture2D" uid="uid://cs87qj6jrajbm" path="res://Character/Player/Sprite/Idle.png" id="5_t4kqb"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_o17q1"]
+texture = ExtResource("4_t0nj4")
+texture_region_size = Vector2i(24, 24)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+0:1/0 = 0
+3:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_5hqx5"]
+tile_size = Vector2i(24, 24)
+sources/1 = SubResource("TileSetAtlasSource_o17q1")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s6wc8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5urrv"]
+atlas = ExtResource("5_t4kqb")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gb6ve"]
+atlas = ExtResource("5_t4kqb")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pb383"]
+atlas = ExtResource("5_t4kqb")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2lsip"]
+atlas = ExtResource("5_t4kqb")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8e5br"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5urrv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gb6ve")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pb383")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2lsip")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="Demo" type="Node2D"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+offset = Vector2(160, 90)
+transform = Transform2D(1, 0, 0, 1, 160, 90)
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+texture = ExtResource("1_p06pa")
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer2"]
+texture = ExtResource("2_n8qen")
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxBackground"]
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer3"]
+texture = ExtResource("3_1wvs2")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAAAAAcAAQAAAAAAAAABAAcAAQABAAAAAAACAAcAAQACAAAAAAADAAcAAQABAAAAAAAEAAcAAQACAAAAAAAFAAcAAQABAAAAAAAGAAcAAQACAAAAAAAHAAcAAQABAAAAAAAIAAcAAQACAAAAAAAJAAcAAQABAAAAAAAKAAcAAQACAAAAAAALAAcAAQABAAAAAAAMAAcAAQACAAAAAAANAAcAAQADAAAAAAA=")
+tile_set = SubResource("TileSet_5hqx5")
+
+[node name="Player" type="Node2D" parent="."]
+position = Vector2(68, 153)
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="Player"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/CharacterBody2D"]
+shape = SubResource("RectangleShape2D_s6wc8")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
+sprite_frames = SubResource("SpriteFrames_8e5br")
+animation = &"idle"
+frame = 3
+frame_progress = 0.288942
