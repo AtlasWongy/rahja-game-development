@@ -1,0 +1,71 @@
+[gd_scene load_steps=12 format=3 uid="uid://covfkjs1k4j23"]
+
+[ext_resource type="Texture2D" uid="uid://b3j6y1cy55xij" path="res://Environment/Demo/Textures/texture_01.png" id="1_3iyid"]
+[ext_resource type="PackedScene" uid="uid://cfiigmcuiuowi" path="res://Character/Player/Texture/knight.tscn" id="2_8paga"]
+[ext_resource type="Script" path="res://Utils/Camera/CameraPivot.cs" id="2_ogh4v"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xd8js"]
+albedo_texture = ExtResource("1_3iyid")
+uv1_scale = Vector3(2, 2, 2)
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_bo4nx"]
+material = SubResource("StandardMaterial3D_xd8js")
+size = Vector3(20, 0.1, 20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ruk7u"]
+size = Vector3(20, 0.1, 20)
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_2bo48"]
+
+[sub_resource type="Sky" id="Sky_avyoh"]
+sky_material = SubResource("PhysicalSkyMaterial_2bo48")
+
+[sub_resource type="Environment" id="Environment_njbfv"]
+background_mode = 2
+sky = SubResource("Sky_avyoh")
+
+[sub_resource type="BoxMesh" id="BoxMesh_pyhoq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_t8xrr"]
+
+[node name="DemoNew" type="Node3D"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("BoxMesh_bo4nx")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00088501, -0.00440979, 0.0211487)
+shape = SubResource("BoxShape3D_ruk7u")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_njbfv")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.0317533, 0.219182, -0.975167, -0.0071332, 0.975684, 0.219066, 0.99947, -8.72882e-09, 0.0325447, -4.24516, 2.01223, 0.720045)
+light_energy = 11.779
+
+[node name="CameraPivot" type="Node3D" parent="." node_paths=PackedStringArray("_player")]
+transform = Transform3D(0.707107, -0.353553, 0.612372, 0, 0.866025, 0.5, -0.707107, -0.353553, 0.612372, 0, 0, 0)
+script = ExtResource("2_ogh4v")
+_player = NodePath("../Knight")
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, -5.06639e-07, 0, -5.96046e-08, 1, 0, 0, 10)
+projection = 1
+fov = 35.0
+size = 5.0
+
+[node name="Knight" parent="." instance=ExtResource("2_8paga")]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.608613, 1.61446)
+mesh = SubResource("BoxMesh_pyhoq")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("BoxShape3D_t8xrr")
