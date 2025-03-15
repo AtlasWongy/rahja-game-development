@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://covfkjs1k4j23"]
+[gd_scene load_steps=11 format=3 uid="uid://covfkjs1k4j23"]
 
 [ext_resource type="Texture2D" uid="uid://b3j6y1cy55xij" path="res://Environment/Demo/Textures/texture_01.png" id="1_3iyid"]
-[ext_resource type="PackedScene" uid="uid://cfiigmcuiuowi" path="res://Character/Player/Texture/knight.tscn" id="2_8paga"]
+[ext_resource type="PackedScene" uid="uid://cfiigmcuiuowi" path="res://Character/Player/knight.tscn" id="2_8paga"]
 [ext_resource type="Script" path="res://Utils/Camera/CameraPivot.cs" id="2_ogh4v"]
+[ext_resource type="PackedScene" uid="uid://d231kgi682cyl" path="res://Character/Enemy/Enemy.tscn" id="4_qkwil"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xd8js"]
 albedo_texture = ExtResource("1_3iyid")
@@ -24,10 +25,6 @@ sky_material = SubResource("PhysicalSkyMaterial_2bo48")
 [sub_resource type="Environment" id="Environment_njbfv"]
 background_mode = 2
 sky = SubResource("Sky_avyoh")
-
-[sub_resource type="BoxMesh" id="BoxMesh_pyhoq"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_t8xrr"]
 
 [node name="DemoNew" type="Node3D"]
 
@@ -60,12 +57,8 @@ fov = 35.0
 size = 5.0
 
 [node name="Knight" parent="." instance=ExtResource("2_8paga")]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0.981248)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.608613, 1.61446)
-mesh = SubResource("BoxMesh_pyhoq")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
-shape = SubResource("BoxShape3D_t8xrr")
+[node name="Enemy" parent="." node_paths=PackedStringArray("_player") instance=ExtResource("4_qkwil")]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, -0.6)
+_player = NodePath("../Knight")

@@ -1,11 +1,13 @@
-[gd_scene load_steps=93 format=3 uid="uid://cfiigmcuiuowi"]
+[gd_scene load_steps=98 format=3 uid="uid://cfiigmcuiuowi"]
 
 [ext_resource type="PackedScene" uid="uid://dwwrdibw65j7m" path="res://Character/Player/gltf/Knight.glb" id="1_e31r2"]
 [ext_resource type="Script" path="res://Character/Player/PlayerControllerSix.cs" id="2_n0qwk"]
 [ext_resource type="Script" path="res://Character/Player/AnimationController.cs" id="3_32bm7"]
-[ext_resource type="Script" path="res://Character/Player/State/StateMachine.cs" id="4_btbah"]
+[ext_resource type="PackedScene" uid="uid://j7xq3s4s2qe8" path="res://Utils/StateMachine/StateMachine.tscn" id="4_g63e3"]
 [ext_resource type="Script" path="res://Character/Player/State/IdleState.cs" id="5_2218f"]
 [ext_resource type="Script" path="res://Character/Player/State/MoveState.cs" id="6_2n45k"]
+[ext_resource type="Script" path="res://Character/Player/State/ParryState.cs" id="7_5ue2j"]
+[ext_resource type="Script" path="res://Character/Player/State/RiposteState.cs" id="8_7ei3h"]
 
 [sub_resource type="Animation" id="Animation_r5fgx"]
 resource_name = "1H_Melee_Attack_Chop"
@@ -29652,6 +29654,9 @@ _data = {
 "Walking_C": SubResource("Animation_jjni3")
 }
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tamfx"]
+animation = &"1H_Melee_Attack_Chop"
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_h3ubi"]
 animation = &"Blocking"
 
@@ -29675,10 +29680,15 @@ xfade_time = 0.25
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_g3b14"]
 xfade_time = 0.25
-switch_mode = 2
-advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6u808"]
+xfade_time = 0.25
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0r8tu"]
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_03kbi"]
+states/1H_Melee_Attack_Chop/node = SubResource("AnimationNodeAnimation_tamfx")
+states/1H_Melee_Attack_Chop/position = Vector2(362, -39)
 states/Blocking/node = SubResource("AnimationNodeAnimation_h3ubi")
 states/Blocking/position = Vector2(362, 206)
 states/Idle/node = SubResource("AnimationNodeAnimation_t8s6d")
@@ -29686,12 +29696,13 @@ states/Idle/position = Vector2(362, 60)
 states/Running_A/node = SubResource("AnimationNodeAnimation_ruluw")
 states/Running_A/position = Vector2(524, 60)
 states/Start/position = Vector2(154, 60)
-transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_0uxl1"), "Idle", "Running_A", SubResource("AnimationNodeStateMachineTransition_gkfs2"), "Running_A", "Idle", SubResource("AnimationNodeStateMachineTransition_tj4ux"), "Idle", "Blocking", SubResource("AnimationNodeStateMachineTransition_q0380"), "Blocking", "Idle", SubResource("AnimationNodeStateMachineTransition_g3b14")]
-graph_offset = Vector2(-328, -8)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_0uxl1"), "Idle", "Running_A", SubResource("AnimationNodeStateMachineTransition_gkfs2"), "Running_A", "Idle", SubResource("AnimationNodeStateMachineTransition_tj4ux"), "Idle", "Blocking", SubResource("AnimationNodeStateMachineTransition_q0380"), "Blocking", "Idle", SubResource("AnimationNodeStateMachineTransition_g3b14"), "Idle", "1H_Melee_Attack_Chop", SubResource("AnimationNodeStateMachineTransition_6u808"), "1H_Melee_Attack_Chop", "Idle", SubResource("AnimationNodeStateMachineTransition_0r8tu")]
+graph_offset = Vector2(-290, -74)
 
 [node name="Knight" instance=ExtResource("1_e31r2")]
 transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
 script = ExtResource("2_n0qwk")
+_speed = 5.0
 
 [node name="GeneralSkeleton" parent="Rig" index="0"]
 bones/1/position = Vector3(0, 0.392064, 0)
@@ -29791,16 +29802,20 @@ libraries = {
 tree_root = SubResource("AnimationNodeStateMachine_03kbi")
 anim_player = NodePath("../AnimationPlayer")
 
-[node name="AnimationController" type="Node" parent="." index="4" node_paths=PackedStringArray("_animationTree", "_playerBody3D")]
+[node name="AnimationController" type="Node" parent="." index="4" node_paths=PackedStringArray("_animationTree")]
 script = ExtResource("3_32bm7")
 _animationTree = NodePath("../AnimationTree")
-_playerBody3D = NodePath("..")
 
-[node name="StateMachine" type="Node" parent="." index="5"]
-script = ExtResource("4_btbah")
+[node name="StateMachine" parent="." index="5" instance=ExtResource("4_g63e3")]
 
 [node name="Idle" type="Node" parent="StateMachine" index="0"]
 script = ExtResource("5_2218f")
 
 [node name="Move" type="Node" parent="StateMachine" index="1"]
 script = ExtResource("6_2n45k")
+
+[node name="Parry" type="Node" parent="StateMachine" index="2"]
+script = ExtResource("7_5ue2j")
+
+[node name="Riposte" type="Node" parent="StateMachine" index="3"]
+script = ExtResource("8_7ei3h")

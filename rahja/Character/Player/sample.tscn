@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://cn500emlder3w"]
-
-[ext_resource type="Script" path="res://Character/Player/Sample.cs" id="1_0tpkr"]
-
-[node name="Sample" type="CharacterBody3D"]
-script = ExtResource("1_0tpkr")

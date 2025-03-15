@@ -21,6 +21,6 @@ public partial class IdleState: State
     public override void Enter(string previousStatePath, Dictionary data = null)
     {
         Player.Velocity = Vector3.Zero;
-        Player.EmitSignal("MovementSignal", false);
+        AnimationController.EmitSignal("MovementSignal", false);
     }
 }

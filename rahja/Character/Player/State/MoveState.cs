@@ -8,9 +8,13 @@ public partial class MoveState: State
     public override void PhysicsUpdate(float delta)
     {
         RotatePlayer();
-        if (Input.IsActionPressed("movement"))
+        if (Input.IsActionPressed("parry"))
         {
-            Player.Velocity = Player.Transform.Basis.Z * Player.Speed;
+            EmitSignal("Finished", "Parry", new Dictionary());
+        }
+        else if (Input.IsActionPressed("movement"))
+        {
+            Player.Velocity = Player.Transform.Basis.Z * Player.GetSpeed();
             Player.MoveAndSlide();
         }
         else
@@ -18,9 +22,9 @@ public partial class MoveState: State
             EmitSignal("Finished", "Idle", new Dictionary());
         }
     }
-
+    
     public override void Enter(string previousStatePath, Dictionary data = null)
     {
-        Player.EmitSignal("MovementSignal", true);
+        AnimationController.EmitSignal("MovementSignal", true);
     }
 }

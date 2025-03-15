@@ -3,23 +3,24 @@ using Godot.Collections;
 
 namespace Rahja.Character.Player.State;
 
-public partial class ParryState: State
+public partial class RiposteState: State
 {
     public override void PhysicsUpdate(float delta)
     {
         // Check for the collision
-        if (Input.IsActionJustPressed("riposte") /* && Must check for successful parry */)
+        // Can cancel the attack by dashing or parrying again
+        if (Input.IsActionJustPressed("riposte"))
         {
-            EmitSignal("Finished", "Riposte", new Dictionary());
+            EmitSignal("Finished", "Parry", new Dictionary());
         }
     }
     
     public override void Enter(string previousStatePath, Dictionary data = null)
     {
         Player.Velocity = Vector3.Zero;
-        AnimationController.EmitSignal("ParrySignal");
+        AnimationController.EmitSignal("RiposteSignal");  
     }
-
+    
     protected override void OnAnimationFinished(StringName stringName)
     {
         if (Input.IsActionPressed("movement"))

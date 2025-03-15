@@ -10,6 +10,7 @@ public abstract partial class State : Node
     public delegate void FinishedEventHandler(string nextStatePath, Dictionary data);
     
     protected PlayerControllerSix Player;
+    protected AnimationController AnimationController;
     
     private float _turnDirection;
     
@@ -18,6 +19,9 @@ public abstract partial class State : Node
         await ToSignal(Owner, "ready");
         Player = Owner as PlayerControllerSix;
         if (Player != null) GD.Print(Player.GetClass());
+        
+        AnimationController = GetNode<AnimationController>("../../AnimationController");
+        AnimationController.GetAnimationTree().AnimationFinished += OnAnimationFinished;
     }
 
     public override void _Input(InputEvent @event)
@@ -48,6 +52,8 @@ public abstract partial class State : Node
     public virtual void Enter(string previousStatePath, Dictionary data = null) { }
 
     public virtual void Exit() { }
+    
+    protected virtual void OnAnimationFinished(StringName stringName) { }
 }
 
 /* ========================================== */
